@@ -1,0 +1,93 @@
+version: "3.1"
+
+intents:
+  - greet
+  - ask_kpi_value
+  - forecast_kpi
+  - stop
+
+entities:
+  - kpi
+  - segment
+  - period
+  - horizon
+  - model
+
+slots:
+  kpi:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: kpi
+      - type: from_text
+  segment:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: segment
+      - type: from_text
+  period:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: period
+      - type: from_text
+  horizon:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: horizon
+      - type: from_text
+  model:
+    type: text
+    influence_conversation: true
+    initial_value: "prophet"
+    mappings:
+      - type: from_entity
+        entity: model
+      - type: from_text
+
+responses:
+  utter_greet:
+    - text: "Hi! Ask me about ARPU, churn rate, net adds, or request a forecast like 'forecast next quarter ARPU'."
+  utter_ask_kpi:
+    - text: "Which KPI are you interested in (e.g., ARPU, churn rate, net additions)?"
+  utter_ask_segment:
+    - text: "Which customer segment should I use (postpaid, prepaid, business)?"
+  utter_ask_period:
+    - text: "For what period do you need the KPI (e.g., last month, 2024-Q2, last 12 months)?"
+  utter_ask_horizon:
+    - text: "How many periods ahead should I forecast?"
+  utter_ask_model:
+    - text: "Do you want me to use Prophet or ARIMA for the forecast?"
+  utter_stop:
+    - text: "Okay, stopping. Let me know if you need anything else."
+  utter_not_understood:
+    - text: "I'm not sure I understood that. Could you rephrase or provide more detail?"
+
+forms:
+  kpi_query_form:
+    ignored_intents: [stop]
+    required_slots:
+      - kpi
+      - segment
+      - period
+  forecast_form:
+    ignored_intents: [stop]
+    required_slots:
+      - kpi
+      - segment
+      - horizon
+      - model
+
+actions:
+  - action_query_kpi
+  - action_forecast_kpi
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

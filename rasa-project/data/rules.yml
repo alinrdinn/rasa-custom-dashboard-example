@@ -1,0 +1,50 @@
+version: "3.1"
+
+rules:
+  - rule: greet
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: stop forms
+    condition:
+      - active_loop: kpi_query_form
+    steps:
+      - intent: stop
+      - action: utter_stop
+      - action: action_deactivate_loop
+      - active_loop: null
+  - rule: stop forecast form
+    condition:
+      - active_loop: forecast_form
+    steps:
+      - intent: stop
+      - action: utter_stop
+      - action: action_deactivate_loop
+      - active_loop: null
+
+  - rule: handle KPI lookup
+    steps:
+      - intent: ask_kpi_value
+      - action: kpi_query_form
+      - active_loop: kpi_query_form
+  - rule: submit KPI lookup
+    condition:
+      - active_loop: kpi_query_form
+    steps:
+      - action: kpi_query_form
+      - active_loop: null
+      - action: action_query_kpi
+
+  - rule: handle forecasting
+    steps:
+      - intent: forecast_kpi
+      - action: forecast_form
+      - active_loop: forecast_form
+  - rule: submit forecast
+    condition:
+      - active_loop: forecast_form
+    steps:
+      - action: forecast_form
+      - active_loop: null
+      - action: action_forecast_kpi

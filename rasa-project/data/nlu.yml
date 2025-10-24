@@ -1,0 +1,48 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey there
+      - good morning
+      - good afternoon
+      - what can you do?
+
+  - intent: ask_kpi_value
+    examples: |
+      - what was [churn rate](kpi) for [prepaid](segment) [last month](period)?
+      - show [ARPU](kpi) for [postpaid](segment) in [2024-Q1](period)
+      - net adds for [business](segment) [last 12 months](period)
+      - give me [arpu](kpi) trend for [prepaid](segment) over the [previous 3](period) months
+      - how many net additions did [postpaid](segment) get [in january 2024](period)?
+      - what is the [churn](kpi) for [business](segment) segment [this quarter](period)?
+      - what's [arpu](kpi) [ytd](period) for [postpaid](segment)?
+
+  - intent: forecast_kpi
+    examples: |
+      - forecast [ARPU](kpi) for [postpaid](segment) next [3](horizon) months
+      - predict [net additions](kpi) for [prepaid](segment) for the next [2](horizon) quarters using [prophet](model)
+      - project [churn rate](kpi) for [postpaid](segment) [6](horizon) months ahead with [arima](model)
+      - can you forecast [arpu](kpi) [4](horizon) months out for [business](segment)?
+      - run a [prophet](model) forecast on [net adds](kpi) for [postpaid](segment) for the next [6](horizon) months
+      - give me an [arima](model) forecast of [churn rate](kpi) [3](horizon) months for [prepaid](segment)
+
+  - intent: stop
+    examples: |
+      - stop
+      - cancel
+      - nevermind
+      - forget it
+      - that's all
+
+entity_synonyms:
+  arpu:
+    - average revenue per user
+  churn rate:
+    - churn
+    - churnrate
+  net adds:
+    - net additions
+    - net subscribers

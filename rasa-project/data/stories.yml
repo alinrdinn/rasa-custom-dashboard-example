@@ -1,0 +1,40 @@
+version: "3.1"
+
+stories:
+  - story: sample kpi lookup
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: ask_kpi_value
+        entities:
+          - kpi: arpu
+          - segment: postpaid
+          - period: last month
+      - action: kpi_query_form
+      - active_loop: kpi_query_form
+      - slot_was_set:
+          - kpi: arpu
+          - segment: postpaid
+          - period: last month
+      - action: kpi_query_form
+      - active_loop: null
+      - action: action_query_kpi
+
+  - story: sample forecast path
+    steps:
+      - intent: forecast_kpi
+        entities:
+          - kpi: churn rate
+          - segment: prepaid
+          - horizon: 3
+          - model: prophet
+      - action: forecast_form
+      - active_loop: forecast_form
+      - slot_was_set:
+          - kpi: churn rate
+          - segment: prepaid
+          - horizon: 3
+          - model: prophet
+      - action: forecast_form
+      - active_loop: null
+      - action: action_forecast_kpi
